@@ -44,11 +44,11 @@ export default function SignupPage() {
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-900">
             <div className="w-full max-w-sm p-8 bg-gray-800 rounded-xl shadow-2xl border border-gray-700">
-                <h1 className="text-3xl font-bold text-center text-gray-100 mb-6">{loading ? "Creating Account..." : "Create Account"}</h1>
+                <h1 className="text-2xl font-bold text-center text-gray-100 mb-6">{loading ? "Creating Account..." : "Create Account"}</h1>
 
                 <div className="space-y-4">
                     <div>
-                        <label htmlFor="username" className="block text-sm font-medium text-gray-400 mb-1">Username</label>
+                        <label htmlFor="username" className="block text-sm font-medium text-gray-500 mb-1">Username</label>
                         <input
                             type="text"
                             id="username"
