@@ -9,9 +9,17 @@ connect();
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
-    const { username, email, password } = reqBody;
+    const { username, email, password, role } = reqBody; // Destructure the new 'role' field
     console.log(reqBody);
 
+    // Basic validation for new 'role' field
+    if (!role) {
+      return NextResponse.json(
+        { message: "Role is required" },
+        { status: 400 }
+      );
+    }
+    
     // check if user already exists
     const user = await User.findOne({ email });
     if (user) {
@@ -30,6 +38,7 @@ export async function POST(request: NextRequest) {
       username,
       email,
       password: hashedPassword,
+      role, // Add the role to the new user document
     });
     const savedUser = await newUser.save();
 

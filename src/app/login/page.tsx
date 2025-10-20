@@ -24,8 +24,17 @@ export default function LoginPage() {
 
       toast.success("Logged in successfully ✅");
 
-      // Redirect to profile page using returned user username
-      router.push(`/profile/${response.data.user.username}`);
+      const userRole = response.data.user.role; // Extract the role from the response
+
+      // Role-based redirection logic
+      if (userRole === 'teacher') {
+        router.push('/teacher-dashboard');
+      } else if (userRole === 'student') {
+        router.push('/student-dashboard');
+      } else {
+        // Fallback for unexpected role
+        router.push('/profile'); 
+      }
     } catch (err: any) {
       console.error("Login error:", err.response?.data || err.message);
       toast.error(err.response?.data?.message || "Something went wrong ❌");
@@ -43,18 +52,22 @@ export default function LoginPage() {
   }, [user]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-900">
-      <div className="w-full max-w-sm p-8 bg-gray-800 rounded-xl shadow-2xl border border-gray-600">
-        <h1 className="text-3xl font-bold text-center text-gray-200 mb-6">
+    // 1. Light Theme Background
+    <div className="flex items-center justify-center min-h-screen bg-white">
+      {/* 2. Light Theme Card */}
+      <div className="w-full max-w-sm p-8 bg-gray-50 rounded-xl shadow-xl border border-gray-200">
+        {/* 3. Dark Text */}
+        <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
           {loading ? "Logging in..." : "Log In"}
         </h1>
 
         <div className="space-y-4">
           {/* Email */}
           <div>
+            {/* 4. Dark Label Text */}
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-400 mb-1"
+              className="block text-sm font-medium text-gray-700 mb-1"
             >
               Email
             </label>
@@ -63,16 +76,18 @@ export default function LoginPage() {
               id="email"
               value={user.email}
               onChange={(e) => setUser({ ...user, email: e.target.value })}
-              className="w-full px-4 py-2 bg-gray-700 text-gray-200 border border-gray-600 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              // 5. Light Input Fields
+              className="w-full px-4 py-2 bg-white text-gray-800 border border-gray-300 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="you@example.com"
             />
           </div>
 
           {/* Password */}
           <div>
+            {/* 6. Dark Label Text */}
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-400 mb-1"
+              className="block text-sm font-medium text-gray-700 mb-1"
             >
               Password
             </label>
@@ -81,19 +96,21 @@ export default function LoginPage() {
               id="password"
               value={user.password}
               onChange={(e) => setUser({ ...user, password: e.target.value })}
-              className="w-full px-4 py-2 bg-gray-700 text-gray-200 border border-gray-600 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              // 7. Light Input Fields
+              className="w-full px-4 py-2 bg-white text-gray-800 border border-gray-300 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="••••••••"
             />
           </div>
 
-          {/* Login Button */}
+          {/* Login Button (Blue) */}
           <button
             onClick={onLogin}
             disabled={buttonDisabled || loading}
-            className={`w-full py-2 px-4 font-semibold rounded-lg transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 ${
+            // 8. Blue Button Styling
+            className={`w-full py-2 px-4 font-semibold rounded-lg transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
               buttonDisabled || loading
-                ? "bg-gray-600 cursor-not-allowed text-gray-300"
-                : "bg-blue-600 hover:bg-blue-700 text-white"
+                ? 'bg-blue-300 text-white cursor-not-allowed'
+                : 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-gray-50'
             }`}
           >
             {loading ? "Logging in..." : "Log In"}
@@ -102,11 +119,13 @@ export default function LoginPage() {
 
         {/* Signup link */}
         <div className="text-center mt-6">
-          <p className="text-sm text-gray-400">
+          {/* 9. Dark Link Text */}
+          <p className="text-sm text-gray-500">
             Don&apos;t have an account?{" "}
+            {/* 10. Blue Link Color */}
             <Link
               href="/signup"
-              className="font-semibold text-blue-500 hover:text-blue-400 transition duration-300"
+              className="font-semibold text-blue-600 hover:text-blue-500 transition duration-300"
             >
               Sign up
             </Link>

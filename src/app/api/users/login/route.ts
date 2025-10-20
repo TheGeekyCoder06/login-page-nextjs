@@ -13,6 +13,7 @@ export async function POST(request: NextRequest) {
     console.log("Login attempt:", reqBody);
 
     // 1. Check if user exists
+    // Mongoose automatically converts string ID to ObjectId for lookup
     const user = await User.findOne({ email });
     if (!user) {
       return NextResponse.json(
@@ -30,11 +31,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 3. Prepare token payload
+    // 3. Prepare token payload (UPDATED to include role)
     const tokenData = {
-    id: user._id.toString(),      
-    username: user.username,      
-    email: user.email,
+      id: user._id.toString(),
+      username: user.username,
+      email: user.email,
+      role: user.role, // 👈 KEY CHANGE: Include the user's role here
     };
 
     // 4. Create token
@@ -43,12 +45,12 @@ export async function POST(request: NextRequest) {
     });
 
     // 5. Create response
-        const response = NextResponse.json(
-        {
+    const response = NextResponse.json(
+      {
         message: "Login successful",
-        user: tokenData, 
-        },
-    { status: 200 }
+        user: tokenData,
+      },
+      { status: 200 }
     );
 
     // 6. Set cookie
